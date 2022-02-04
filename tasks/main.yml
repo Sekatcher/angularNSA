@@ -1,6 +1,13 @@
 ---
 # tasks file for angular_test
 
+- name : Update and upgrade apt packages
+  become : true
+  apt :
+    upgrade : yes
+    update_cache : yes
+    cache_valid_time : 86400
+  
 - name : "Install packages"
   apt : name ={{ item }} update_cache=yes state=latest
   with_items:
@@ -11,20 +18,12 @@
       - nginx
       - curl
 
-- name : Update and upgrade apt packages
-  become : true
-  apt :
-    upgrade : yes
-    update_cache : yes
-    cache_valid_time : 86400
-
 - name : "Install nvm"
   shell : >
     curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
 
 - name : "Install node js using nvm"
-  shell : "source ~/.profile && nvm install 14.15.5 nvm use 14.15.5"  
-
+  shell : "source ~/.profile && nvm install 14.15.5 && nvm use 14.15.5"  
 
 - name : Install angular 7.1.4
   npm : 
